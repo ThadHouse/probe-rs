@@ -406,6 +406,10 @@ impl FlashLoader {
                 // Attach to memory and core.
                 let mut core = session.core(region_core_index).map_err(FlashError::Core)?;
 
+                let status = core.status()?;
+                println!("Statuscore {:?}", status);
+
+
                 let mut some = false;
                 for (address, data) in self.builder.data_in_range(&region.range) {
                     some = true;
