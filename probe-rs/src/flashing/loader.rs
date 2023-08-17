@@ -409,6 +409,11 @@ impl FlashLoader {
                 let status = core.status()?;
                 println!("Statuscore {:?}", status);
 
+                if status.is_halted() {
+                    let pc:u32 = core.read_core_reg(core.program_counter().id)?;
+                    println!("PC {:#x}", pc);
+                }
+
 
                 let mut some = false;
                 for (address, data) in self.builder.data_in_range(&region.range) {
@@ -421,6 +426,14 @@ impl FlashLoader {
                     );
                     // Write data to memory.
                     core.write_8(address, data).map_err(FlashError::Core)?;
+                }
+
+                let status = core.status()?;
+                println!("Statuscore2 {:?}", status);
+
+                if status.is_halted() {
+                    let pc:u32 = core.read_core_reg(core.program_counter().id)?;
+                    println!("P2C {:#x}", pc);
                 }
 
                 if !some {
